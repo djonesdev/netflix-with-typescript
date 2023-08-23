@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import axios from "axios";
 
 import LoginRegisterForm from "@/components/LoginRegisterForm";
 
@@ -20,10 +21,22 @@ export default function Auth() {
   }, [email, password]);
 
   const register = useCallback(async () => {
-    console.log("register");
-  }, [email, name, password, login]);
+    try {
+      await axios.post('/api/register', {
+        email,
+        name,
+        password
+      });
 
-  const submit = () => (variant === "login" ? login() : register());
+      // login();
+    } catch (error) {
+        console.log(error);
+    }
+  }, [email, name, password, login]);
+  
+
+  const submit = (e: React.MouseEvent) => (variant === "login" ? login() : register())
+
   return (
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
       <div className="bg-black w-full h-full lg:bg-opacity-50">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { EventHandler, useState } from "react";
 
 import Input from "./Input";
 
@@ -12,7 +12,7 @@ interface LoginRegisterFormProps {
     email: string;
     password: string;
   };
-  submit: () => void;
+  submit: (e: React.MouseEvent) => void;
 }
 
 export default function LoginRegisterForm({
@@ -54,8 +54,6 @@ export default function LoginRegisterForm({
           onChange={(e: any) => setPassword(e.target.value)}
         />
         <button
-          type="submit"
-          value="Submit"
           aria-label={variant}
           onClick={submit}
           className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
