@@ -1,9 +1,12 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
+import { signIn } from "next-auth/react";
+import { useRouter } from 'next/router'
 
 import LoginRegisterForm from "@/components/LoginRegisterForm";
 
 export default function Auth() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -17,10 +20,22 @@ export default function Auth() {
   }, []);
 
   const login = useCallback(async () => {
-    console.log("login");
-  }, [email, password]);
+    try {
+      await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: '/'
+      });
 
-  const register = useCallback(async () => {
+      router.push('/profiles');
+    } catch (error) {
+      console.log(error);
+    }
+  }, [email, password, router]);
+
+  const register = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
       await axios.post('/api/register', {
         email,
@@ -28,14 +43,14 @@ export default function Auth() {
         password
       });
 
-      // login();
+      login();
     } catch (error) {
         console.log(error);
     }
   }, [email, name, password, login]);
   
 
-  const submit = (e: React.MouseEvent) => (variant === "login" ? login() : register())
+  const submit = (e: React.FormEvent) => (variant === "login" ? login() : register(e))
 
   return (
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
