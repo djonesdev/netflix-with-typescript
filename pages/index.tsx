@@ -22,7 +22,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
 export default function Home() {
   const { data: user } = useCurrentUser();
-  console.log(user, 'this is the user?')
+
   return (
     <>
       <h2>Netflix with typescript</h2>

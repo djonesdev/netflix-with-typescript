@@ -1,29 +1,33 @@
-import { NextPageContext } from "next"
+import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 
 export async function getServerSideProps(context: NextPageContext) {
-    const session = await getSession(context);
-  
-    if (!session) {
-      return {
-        redirect: {
-          destination: '/auth',
-          permanent: false,
-        }
-      }
-    }
-  
+  const session = await getSession(context);
+
+  if (!session) {
     return {
-      props: {}
-    }
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+    };
   }
 
-function profiles() {
-  return (
-    <div>
-      <p className='text-white text-4xl'>Profile page</p>
-    </div>
-  )
+  return {
+    props: {},
+  };
 }
 
-export default profiles
+function Profiles() {
+  return (
+    <div className="flex items-center h-full justify-center">
+      <div className="flex flex-col">
+        <h1 className="text-3xl md:text-6xl text-white text-center">
+          Who is watching?
+        </h1>
+      </div>
+    </div>
+  );
+}
+
+export default Profiles;
