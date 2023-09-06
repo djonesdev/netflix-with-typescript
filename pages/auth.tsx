@@ -2,8 +2,6 @@ import { useState, useCallback } from "react";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 
 import LoginRegisterForm from "@/components/LoginRegisterForm";
 import OAuthLogins from "@/components/OAuthLogins";
@@ -27,15 +25,12 @@ export default function Auth() {
       await signIn("credentials", {
         email,
         password,
-        redirect: false,
-        callbackUrl: "/",
+        callbackUrl: "/profiles",
       });
-
-      router.push("/profiles");
     } catch (error) {
       console.log(error);
     }
-  }, [email, password, router]);
+  }, [email, password]);
 
   const register = useCallback(
     async (e: React.FormEvent) => {
