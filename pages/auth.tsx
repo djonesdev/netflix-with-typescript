@@ -1,9 +1,12 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
 import { signIn } from "next-auth/react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 import LoginRegisterForm from "@/components/LoginRegisterForm";
+import OAuthLogins from "@/components/OAuthLogins";
 
 export default function Auth() {
   const router = useRouter();
@@ -21,36 +24,39 @@ export default function Auth() {
 
   const login = useCallback(async () => {
     try {
-      await signIn('credentials', {
+      await signIn("credentials", {
         email,
         password,
         redirect: false,
-        callbackUrl: '/'
+        callbackUrl: "/",
       });
 
-      router.push('/profiles');
+      router.push("/profiles");
     } catch (error) {
       console.log(error);
     }
   }, [email, password, router]);
 
-  const register = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      await axios.post('/api/register', {
-        email,
-        name,
-        password
-      });
+  const register = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      try {
+        await axios.post("/api/register", {
+          email,
+          name,
+          password,
+        });
 
-      login();
-    } catch (error) {
+        login();
+      } catch (error) {
         console.log(error);
-    }
-  }, [email, name, password, login]);
-  
+      }
+    },
+    [email, name, password, login]
+  );
 
-  const submit = (e: React.FormEvent) => (variant === "login" ? login() : register(e))
+  const submit = (e: React.FormEvent) =>
+    variant === "login" ? login() : register(e);
 
   return (
     <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
@@ -72,6 +78,7 @@ export default function Auth() {
               }}
               submit={submit}
             />
+            <OAuthLogins signIn={signIn} />
             <article>
               <p className="text-neutral-500 mt-12">
                 First time using Netflix?
